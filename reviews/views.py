@@ -6,10 +6,15 @@ from django.http import HttpResponseRedirect
 def review(request):
     if request.method == 'POST':
         username = request.POST['username']
-        print(username)
+        if not username: # if username is blank; username=""
+            return render(request, "reviews/review.html",{
+                "has_error": True,
+            })
         return HttpResponseRedirect('/thank-you')
     
-    return render(request, "reviews/review.html")
+    return render(request, "reviews/review.html", {
+        'has_error': False,
+    })
 
 
 def thank_you(request):
