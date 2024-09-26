@@ -1,8 +1,10 @@
 from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.views import View
 from django.views.generic.base import TemplateView
+from django.views.generic import ListView
 from .forms import ReviewForm
 from .models import Review
 
@@ -34,14 +36,10 @@ class ThankYouView(TemplateView):
         context['message'] = 'Your feedback really helps us to become better.'
         return context
 
-class ReviewsListView(TemplateView):
+class ReviewsListView(ListView):
     template_name = 'reviews/review_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        reviews = Review.objects.all()
-        context['reviews']  = reviews
-        return context
+    model = Review
+    context_object_name = 'reviews'
     
 class SingleReviewView(TemplateView):
     template_name = 'reviews/single_review.html'
